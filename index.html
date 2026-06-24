@@ -3,177 +3,556 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web de Mirella Sanchez</title>
+    <title>Mirella Sanchez | Administración de Negocios</title>
     <style>
-        /* CONFIGURACIÓN GENERAL */
-        html { scroll-behavior: smooth; }
-        body { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background: #000; color: white; overflow-x: hidden; }
-
-        .contenedor-scroll {
-            height: 100vh;
-            overflow-y: scroll;
-            scroll-snap-type: y mandatory;
+        /* --- RESET Y BASE --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        section {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            scroll-snap-align: start;
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: #0b0b1a;
+            color: #e0e0e0;
+            line-height: 1.6;
+            padding: 2rem 1rem;
+            overflow-x: hidden;
+            min-height: 100vh;
             position: relative;
-            padding: 40px;
-            box-sizing: border-box;
+        }
+
+        /* --- LLUVIA DE ESTRELLAS Y FLORES --- */
+        .lluvia-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .item-lluvia {
+            position: absolute;
+            top: -10%;
+            font-size: 1.2rem;
+            animation: caer lineal infinite;
+            opacity: 0;
+            will-change: transform, opacity;
+        }
+
+        @keyframes caer {
+            0% {
+                transform: translateY(0) rotate(0deg) scale(0.5);
+                opacity: 0;
+            }
+            5% {
+                opacity: 1;
+                transform: translateY(5vh) rotate(10deg) scale(1);
+            }
+            100% {
+                transform: translateY(110vh) rotate(720deg) scale(0.3);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: rgba(20, 15, 35, 0.75);
+            backdrop-filter: blur(10px);
+            border-radius: 2rem;
+            padding: 2.5rem;
+            box-shadow: 0 20px 60px rgba(255, 105, 180, 0.15);
+            border: 1px solid rgba(255, 105, 180, 0.1);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* --- TIPOGRAFÍA Y COLORES --- */
+        h1, h2, h3 {
+            color: #ff69b4;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            background: linear-gradient(135deg, #ff69b4, #a020f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: inline-block;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-top: 2rem;
+            border-bottom: 3px solid rgba(255, 105, 180, 0.2);
+            padding-bottom: 0.5rem;
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            margin: 1.5rem 0 0.5rem;
+        }
+
+        a {
+            color: #ff69b4;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        a:hover {
+            color: #ff1493;
+            text-decoration: underline;
+        }
+
+        .subtitulo {
+            font-size: 1.2rem;
+            color: #c0b0d0;
+            margin-top: -0.2rem;
+        }
+
+        /* --- ESTADÍSTICAS CON BORDE PUNTEADO --- */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0 2rem;
             text-align: center;
         }
 
-        /* --- FONDO GALAXIA (PÁGINA 1 Y 3) --- */
-        .fondo-galaxia {
-            background: radial-gradient(circle at center, #2b0b3d 0%, #000 100%);
-            overflow: hidden;
-        }
-        .estrellas-fijas {
-            position: absolute; width: 200%; height: 200%;
-            background-image: 
-                radial-gradient(2px 2px at 40px 60px, #ff69b4, rgba(0,0,0,0)), 
-                radial-gradient(2px 2px at 150px 100px, #a020f0, rgba(0,0,0,0)), 
-                radial-gradient(2px 2px at 250px 250px, #ff1493, rgba(0,0,0,0)), 
-                radial-gradient(2px 2px at 350px 400px, #9370db, rgba(0,0,0,0));
-            background-size: 400px 400px;
-            animation: moveStars 110s linear infinite;
-            opacity: 0.8;
-            z-index: 1;
-        }
-        @keyframes moveStars { from { transform: translate(0,0); } to { transform: translate(-50%, -50%); } }
-
-        /* --- ANIMACIONES DE LLUVIA --- */
-        .lluvia-item {
-            position: absolute; top: -10%; font-size: 25px; z-index: 2;
-            animation: caer 8s linear infinite;
-        }
-        @keyframes caer {
-            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+        .stat-item {
+            background: rgba(255, 255, 255, 0.04);
+            padding: 0.8rem 0.5rem;
+            border-radius: 1rem;
+            border: 2px dashed rgba(255, 105, 180, 0.4);
+            transition: border-color 0.3s, background 0.3s;
         }
 
-        /* --- FONDO PLAYA (PÁGINA 2) --- */
-        #pagina2 {
-            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
-                        url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1920&q=80');
-            background-size: cover; background-position: center;
+        .stat-item:hover {
+            border-color: #ff69b4;
+            background: rgba(255, 105, 180, 0.08);
         }
 
-        /* TARJETAS Y TEXTOS */
-        .tarjeta {
-            background: rgba(255, 255, 255, 0.08);
-            padding: 35px;
-            border-radius: 30px;
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 25px 60px rgba(0,0,0,0.7);
-            max-width: 750px;
-            z-index: 10;
+        .stat-number {
+            display: block;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #ff69b4;
         }
 
-        h1 { 
-            font-size: clamp(30px, 8vw, 60px); 
-            color: #ff69b4; 
-            text-shadow: 0 0 20px #ff1493, 0 0 40px white;
-            animation: saltar 0.8s infinite alternate ease-in-out;
-            margin: 10px 0;
+        .stat-label {
+            font-size: 0.9rem;
+            color: #b0a0c0;
+        }
+
+        /* --- SOBRE MÍ / TARJETAS --- */
+        .sobre-mi {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 1.5rem;
+            border-radius: 1.5rem;
+            border-left: 4px solid #ff69b4;
+            margin: 1rem 0;
+        }
+
+        /* --- LISTA DE CURSOS --- */
+        .lista-cursos {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            padding: 0.5rem 0;
+        }
+
+        .lista-cursos li {
+            background: rgba(255, 105, 180, 0.08);
+            padding: 0.5rem 1rem;
+            border-radius: 1rem;
+            font-size: 0.95rem;
+            border: 1px solid rgba(255, 105, 180, 0.1);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.3rem 0.8rem;
+        }
+
+        .lista-cursos li .profesor-link {
+            color: #ff69b4;
+            font-weight: 500;
+            margin-left: 0.2rem;
+        }
+
+        .lista-cursos li .profesor-link:hover {
+            color: #ff1493;
+        }
+
+        .etiquetas {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin: 0.5rem 0;
+        }
+
+        .etiqueta {
+            background: rgba(160, 32, 240, 0.15);
+            padding: 0.2rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.9rem;
+            border: 1px solid rgba(160, 32, 240, 0.2);
+            color: #d0b0f0;
+        }
+
+        /* --- PROYECTOS --- */
+        .proyectos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.2rem;
+            margin: 1rem 0;
+        }
+
+        .proyecto-card {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 1.2rem 1.5rem;
+            border-radius: 1.2rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .proyecto-card:hover {
+            transform: translateY(-4px);
+            border-color: #ff69b4;
+        }
+
+        .proyecto-card h4 {
+            color: #ff69b4;
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .proyecto-card p {
+            font-size: 0.95rem;
+            color: #c0b0d0;
+        }
+
+        /* --- COMPAÑEROS --- */
+        .tabla-companeros {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .tabla-companeros th {
+            background: rgba(255, 105, 180, 0.2);
+            color: #ff69b4;
+            padding: 0.8rem 0.8rem;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid rgba(255, 105, 180, 0.2);
+        }
+
+        .tabla-companeros td {
+            padding: 0.6rem 0.8rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .tabla-companeros tr:hover td {
+            background: rgba(255, 105, 180, 0.05);
+        }
+
+        .tabla-companeros a {
+            color: #ff69b4;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .tabla-companeros a:hover {
+            color: #ff1493;
+            text-decoration: underline;
+        }
+
+        .companeros-wrapper {
+            max-height: 400px;
+            overflow-y: auto;
+            border-radius: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .companeros-wrapper::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .companeros-wrapper::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+        }
+
+        .companeros-wrapper::-webkit-scrollbar-thumb {
+            background: #ff69b4;
+            border-radius: 10px;
+        }
+
+        /* --- CONTACTO --- */
+        .contacto-info {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 1.2rem 1.8rem;
+            border-radius: 1.5rem;
+            display: inline-block;
+            border: 1px solid rgba(255, 105, 180, 0.15);
+            margin-top: 0.5rem;
+        }
+
+        .contacto-info a {
+            font-weight: 500;
+        }
+
+        .badge-proceso {
+            background: rgba(255, 165, 0, 0.15);
+            color: #ffa500;
+            font-size: 0.7rem;
+            padding: 0.1rem 0.6rem;
+            border-radius: 1rem;
+            border: 1px solid rgba(255, 165, 0, 0.2);
+            margin-left: 0.3rem;
+            font-weight: 600;
             text-transform: uppercase;
         }
-        @keyframes saltar { from { transform: scale(1); } to { transform: scale(1.05) translateY(-15px); } }
 
-        .mariposa-vuelo {
-            position: absolute; font-size: 80px; animation: volar 12s infinite linear;
-            filter: hue-rotate(var(--h)); z-index: 5;
+        /* --- RESPONSIVE --- */
+        @media (max-width: 600px) {
+            .container { padding: 1.5rem; }
+            h1 { font-size: 2.2rem; }
+            h2 { font-size: 1.6rem; }
+            .stats { grid-template-columns: repeat(2, 1fr); }
+            .proyectos-grid { grid-template-columns: 1fr; }
+            .item-lluvia { font-size: 0.9rem; }
+            .tabla-companeros { font-size: 0.75rem; }
+            .tabla-companeros th, .tabla-companeros td { padding: 0.4rem 0.5rem; }
+            .lista-cursos li { flex-direction: column; align-items: flex-start; }
         }
-        @keyframes volar {
-            from { bottom: -150px; left: var(--l); transform: rotate(0deg); }
-            to { bottom: 110%; left: var(--r); transform: rotate(25deg); }
-        }
-
-        .linea-rosa { width: 60px; height: 4px; background: #ff69b4; margin: 15px auto; border-radius: 10px; }
-
-        .btn-accion {
-            padding: 12px 35px; font-size: 18px; color: white; background: #ff69b4;
-            text-decoration: none; border-radius: 50px; font-weight: bold;
-            transition: 0.4s; display: inline-block; box-shadow: 0 10px 20px rgba(255,105,180,0.4);
-            margin-top: 20px;
-        }
-        .btn-accion:hover { transform: translateY(-5px); background: #ff1493; }
-
-        .info-seccion { text-align: left; margin: 15px 0; font-size: 17px; line-height: 1.6; }
-        .contacto-item { margin-bottom: 8px; color: #eee; }
-        .contacto-item strong { color: #ff69b4; }
-        .contacto-item a { color: white; text-decoration: none; border-bottom: 1px solid #ff69b4; }
     </style>
 </head>
 <body>
+    <!-- LLUVIA DE ESTRELLAS Y FLORES -->
+    <div class="lluvia-container" id="lluviaContainer"></div>
 
-    <div class="contenedor-scroll">
-        
-        <!-- PÁGINA 1: GALAXIA + LLUVIA DE FLORES Y MARIPOSAS -->
-        <section id="pagina1" class="fondo-galaxia">
-            <div class="estrellas-fijas"></div>
-            <div class="lluvia-item" style="left: 15%; animation-delay: 0s;">🌸</div>
-            <div class="lluvia-item" style="left: 35%; animation-delay: 2s;">🦋</div>
-            <div class="lluvia-item" style="left: 55%; animation-delay: 4s;">🌸</div>
-            <div class="lluvia-item" style="left: 75%; animation-delay: 1s;">🦋</div>
-            <div class="lluvia-item" style="left: 90%; animation-delay: 6s;">🌸</div>
+    <div class="container">
+        <!-- ENCABEZADO ACTUALIZADO -->
+        <header>
+            <h1>Mirella Rossy Sanchez Quispe</h1>
+            <p class="subtitulo">Estudiante de Administración de Negocios · Universidad Católica San Pablo (UCSP)</p>
+        </header>
 
-            <div class="tarjeta">
-                <h2 style="font-size: 30px; letter-spacing: 5px;">¡HOLA COMPAÑERO!</h2>
-                <div class="linea-rosa"></div>
-                <p style="color: #ccc;">Bienvenido a mi espacio personal</p>
-                <a href="#pagina2" class="btn-accion">INGRESAR</a>
+        <!-- ESTADÍSTICAS CON BORDE PUNTEADO -->
+        <div class="stats">
+            <div class="stat-item">
+                <span class="stat-number">7+</span>
+                <span class="stat-label">Cursos</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">3+</span>
+                <span class="stat-label">Proyectos</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">III</span>
+                <span class="stat-label">Semestre</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">∞</span>
+                <span class="stat-label">Aprendiendo</span>
+            </div>
+        </div>
+
+        <!-- SOBRE MÍ -->
+        <section>
+            <h2>Sobre mí</h2>
+            <div class="sobre-mi">
+                <p>Soy estudiante de Administración de Empresas /Negocios Internacionales en la Universidad Católica San Pablo (UCSP), Arequipa, Perú. Me apasiona la gestión estratégica, el análisis financiero y la creación de valor en las organizaciones. Disfruto especialmente el violín, la acuarela y la música, que equilibran mi lado analítico con el artístico. Estoy en constante aprendizaje, explorando nuevas metodologías de negocio, herramientas de gestión y tendencias del mercado para resolver problemas de manera creativa y sostenible.</p>
             </div>
         </section>
 
-        <!-- PÁGINA 2: PLAYA Y NOMBRE -->
-        <section id="pagina2">
-            <div class="mariposa-vuelo" style="--l: 10%; --r: 30%; --h: 0deg;">🦋</div>
-            <div class="mariposa-vuelo" style="--l: 80%; --r: 60%; --h: 150deg; animation-delay: 3s;">🦋</div>
-            <p style="font-size: 20px; font-weight: 300; letter-spacing: 3px;">ESTA PÁGINA PERTENECE A:</p>
-            <h1>MIRELLA ROSSY SANCHEZ QUISPE</h1>
-            <a href="#pagina3" class="btn-accion">CONÓCEME</a>
+        <!-- FORMACIÓN ACADÉMICA -->
+        <section>
+            <h2>Formación Académica</h2>
+            <ul style="list-style: none; padding: 0.5rem 0;">
+                <li style="margin-bottom: 0.5rem;">🏛️ <strong>Universidad Católica San Pablo</strong> — Administración de Negocios</li>
+                <li style="margin-bottom: 0.5rem;">🏫 <strong>Colegio de Ciencias Aplicadas</strong> — Educación Secundaria</li>
+                <li style="margin-bottom: 0.5rem;">🌐 <strong>Centro de Idiomas Cultural</strong> — Inglés <span class="badge-proceso">En proceso</span> · Francés <span class="badge-proceso">En proceso</span></li>
+            </ul>
         </section>
 
-        <!-- PÁGINA 3: GALAXIA + LLUVIA DE ESTRELLAS + CONTACTO + LINKEDIN -->
-        <section id="pagina3" class="fondo-galaxia">
-            <div class="estrellas-fijas"></div>
-            <div class="lluvia-item" style="left: 10%; animation-delay: 0s; font-size: 15px;">✨</div>
-            <div class="lluvia-item" style="left: 25%; animation-delay: 1.5s; font-size: 20px;">⭐</div>
-            <div class="lluvia-item" style="left: 65%; animation-delay: 0.5s; font-size: 20px;">⭐</div>
-            <div class="lluvia-item" style="left: 85%; animation-delay: 2s; font-size: 15px;">✨</div>
+        <!-- CURSOS ACTUALIZADOS -->
+        <section>
+            <h2>Cursos</h2>
+            <ul class="lista-cursos">
+                <li>
+                    <strong>Filosofía de la Naturaleza</strong> — 
+                    <a href="https://www.linkedin.com/in/david-matto-neyra-2773a73a7/" target="_blank" class="profesor-link">David Matto Neyra</a>
+                </li>
+                <li>
+                    <strong>Análisis Financiero</strong> — 
+                    <a href="https://www.linkedin.com/in/mar%C3%ADa-bel%C3%A9n-bocchio-linares-96846035/" target="_blank" class="profesor-link">María Belén Bocchio Linares</a>
+                </li>
+                <li>
+                    <strong>Cálculo en Una Variable</strong> — 
+                    <a href="https://www.linkedin.com/in/fiorella-mar%C3%ADa-rend%C3%B3n-garc%C3%ADa-7aa9b7374/" target="_blank" class="profesor-link">Fiorella María Rendón García</a>
+                </li>
+                <li>
+                    <strong>Comportamiento del Consumidor y Toma de Decisiones</strong> — 
+                    <a href="https://www.linkedin.com/in/fabiola-postigo-99996b3b/" target="_blank" class="profesor-link">Fabiola Postigo</a>
+                </li>
+                <li>
+                    <strong>Liderazgo</strong> — 
+                    <a href="https://www.linkedin.com/in/pablo-nu%C3%B1ez-saija-4547232ab/" target="_blank" class="profesor-link">Pablo Plinio Nuñez Saija</a>
+                </li>
+                <li>
+                    <strong>Historia de Occidente I</strong> — 
+                    <a href="https://repositorio.ucsp.edu.pe/browse/author/detail?value=Presb%C3%ADtero%20Rodr%C3%ADguez,%20Gonzalo%20Jos%C3%A9%20Pedro" target="_blank" class="profesor-link">Gonzalo José Pedro Presbítero Rodríguez</a>
+                </li>
+                <li>
+                    <strong>Introducción a Computación</strong> — 
+                    <a href="https://www.linkedin.com/in/ecuadrosv/" target="_blank" class="profesor-link">Ernesto Cuadros-Vargas</a>
+                </li>
+            </ul>
+        </section>
 
-            <div class="tarjeta">
-                <h2 style="color: #ff69b4; font-size: 28px; margin-bottom: 5px;">SOBRE MÍ Y CONTACTO</h2>
-                <div class="linea-rosa"></div>
-                
-                <div class="info-seccion">
-                    <p>🎻 Toco el <strong>Violín</strong> | 🎨 Arte en <strong>Acuarela</strong> | 🎵 <strong>Música</strong></p>
-                </div>
-
-                <div class="info-seccion" style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;">
-                    <p class="contacto-item">📧 <strong>Correo:</strong> mirella.sanchez@ucsp.edu.pe</p>
-                    <p class="contacto-item">📞 <strong>Teléfono:</strong> +51 903267776</p>
-                    <p class="contacto-item">🏫 <strong>Universidad:</strong> UCSP</p>
-                    <!-- NUEVO ENLACE A LINKEDIN -->
-                    <p class="contacto-item">🔗 <strong>LinkedIn:</strong> <a href="https://www.linkedin.com/feed/" target="_blank">Ver perfil profesional</a></p>
-                </div>
-
-                <a href="https://ucsp.edu.pe/carreras/administracion-negocios/?tab=institucional" target="_blank" class="btn-accion">SITIO UCSP</a>
-                <br>
-                <a href="#pagina1" style="color: #555; text-decoration: none; font-size: 11px; display: block; margin-top: 20px;">Volver arriba ↑</a>
+        <!-- INTERESES -->
+        <section>
+            <h2>Intereses</h2>
+            <div class="etiquetas">
+                <span class="etiqueta">🎵 Música</span>
+                <span class="etiqueta">🎹 Piano</span>
+                <span class="etiqueta">🎻 Violín</span>
+                <span class="etiqueta">💃 Danza</span>
+                <span class="etiqueta">🏐 Vóley</span>
+                <span class="etiqueta">🧁 Repostería</span>
+                <span class="etiqueta">🍳 Cocinar</span>
+                <span class="etiqueta">🏊 Natación</span>
+                <span class="etiqueta">✈️ Viajes</span>
             </div>
         </section>
 
+        <!-- PROYECTOS -->
+        <section>
+            <h2>Proyectos</h2>
+            <div class="proyectos-grid">
+                <div class="proyecto-card">
+                    <h4>🇵🇪 Allinta Ruwuana</h4>
+                    <p>La participación en este proyecto nos llevó a aprender mucho más y nos ayudó a ver las problemáticas del Perú que enfrentan.</p>
+                </div>
+                <div class="proyecto-card">
+                    <h4>🎨 Pintura en Acuarela</h4>
+                    <p>Creado en el curso de Creatividad Artística.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- COMPAÑEROS DEL CURSO -->
+        <section>
+            <h2>👥 Compañeros del Curso</h2>
+            <div class="companeros-wrapper">
+                <table class="tabla-companeros">
+                    <thead>
+                        <tr>
+                            <th>Nombre Completo</th>
+                            <th>Página Web</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Flavio Alessandro Yazid Hancco Chaiña</td><td><a href="https://flavio-hc.github.io/pagina-personal/" target="_blank">Visitar</a></td></tr>
+                        <tr><td>Fabrizio Alessandro Ocsa Sanchez</td><td><a href="https://fabrizioocsa.github.io/" target="_blank">Visitar</a></td></tr>
+                        <tr><td>Gabriel Fabrizio Flores Llancaya</td><td><a href="https://gabriel-flores-ll.github.io/" target="_blank">Visitar</a></td></tr>
+                        <tr><td>Ariana Yasmín Delgado Arce</td><td><a href="https://w4nd4r1.github.io/Ariana-Yasmin-Delgado-Arce/" target="_blank">Visitar</a></td></tr>
+                        <tr><td>Aaron Humpiri Obregon</td><td><a href="https://aaronhumpiri.github.io/" target="_blank">Visitar</a></td></tr>
+                        <tr><td>Kenya Magdiel Shupingahua Quiroz</td><td><a href="https://kenya-sq.github.io/Kenya-Shupingahua-Quiroz/" target="_blank">Visitar</a></td></tr>
+                        <tr><td>Farid Aarom Morales Gonzales</td><td><a href="https://faro-m.github.io/Pagina-Web-UCSP/" target="_blank">Visitar</a></td></tr>
+                        <tr><td>Camila Sherlyn Ayamamani Hinojosa</td><td><a href="https://camilasherlyn.github.io/uscpcienciascami/" target="_blank">Visitar</a></td></tr>
+                        <tr><td>Alejandro Jacob Valencia Delgado</td><td><a href="https://thepandoredxxo.github.io/Alejandro-Jacob-Valencia-Delgado-pagina-web-ICC-san-pablo/" target="_blank">Visitar</a></td></tr>
+                        <tr><td>Yenifer Rocio Huarachi Halanoca</td><td><a href="https://yeniferhuarachi-code.github.io/yeniferhuarachihalanoca.github.io/" target="_blank">Visitar</a></td></tr>
+                        <tr><td>YerrI Tony Flores Velasquez</td><td><a href="https://yerriflores.github.io/" target="_blank">Visitar</a></td></tr>
+                        <tr><td>Franco Yerix Aguilar Yucra</td><td><a href="https://franmnm.github.io/" target="_blank">Visitar</a></td></tr>
+                        <tr><td>Gael Andre Sandoval Garcia</td><td><a href="https://annyaguilar-hub.github.io/anny_aguilar_cv/" target="_blank">Visitar</a></td></tr>
+                        <tr><td>Aguilar Zambrano Anny Briyid</td><td><a href="https://annyaguilar-hub.github.io/anny_aguilar_cv/" target="_blank">Visitar</a></td></tr>
+                        <tr><td>Angel Fabian Ramos Muñoz</td><td><a href="https://angelfabianramosmunoz.github.io/" target="_blank">Visitar</a></td></tr>
+                        <tr><td>Diego Alonso Aragon Mamani</td><td><a href="https://diegoalonsoaragonmamani.github.io/DiegoAlonsoAragonMamani/" target="_blank">Visitar</a></td></tr>
+                        <tr><td>Vivian Elizabeth Rivera Cosi</td><td><a href="https://timely-crepe-7fb679.netlify.app/" target="_blank">Visitar</a></td></tr>
+                        <tr><td>Cristopher Maqquera Machaca</td><td><a href="https://paputilin123.github.io/cvproyectnew/" target="_blank">Visitar</a></td></tr>
+                        <tr><td>Nicole Estefany Cespedes Conchacalle</td><td><a href="https://nicocespedes0909-jpg.github.io/Nicole-Estefany-Cespedes-Conchacalle.github.io/" target="_blank">Visitar</a></td></tr>
+                        <tr><td>Michael Fabian Cadena Candia</td><td><a href="https://michaelcadena-lp.github.io/" target="_blank">Visitar</a></td></tr>
+                        <tr><td>Miguel Zuñiga Chacon</td><td><a href="https://miguelezz.github.io/miguel-angel-atawi-zuniga-chacon/" target="_blank">Visitar</a></td></tr>
+                        <tr><td>Fabrizio Manuel Flores Valencia</td><td><a href="https://fabrizioflv.github.io/fabrizio-web/" target="_blank">Visitar</a></td></tr>
+                        <tr><td>Joshept Paredes Hallasi</td><td><a href="https://jhshongw08.github.io/juanjosheptshongwparedesallasi/" target="_blank">Visitar</a></td></tr>
+                        <tr><td>Andrea Milagros Zevallos Apaza</td><td><a href="https://andreazevallos.github.io/Pagina-web-Andrea-Zevallos/" target="_blank">Visitar</a></td></tr>
+                        <tr><td>Giovanni Andrés Aguilar Marquez</td><td><a href="https://giiovanniandresaguilarmarquez-collab.github.io/giovanniandresaguilarmarquez/" target="_blank">Visitar</a></td></tr>
+                        <tr><td>Rodrigo Daniel Gaona Orozco</td><td><a href="https://rodango.github.io/rodrigo-daniel-gaona-orozco/" target="_blank">Visitar</a></td></tr>
+                        <tr><td>Erick Eloy Mullisaca Alviz</td><td><a href="https://skjr3.github.io/Mi-pagina-web/" target="_blank">Visitar</a></td></tr>
+                        <tr><td>Luciana Mercedes Velarde Caceres</td><td><a href="https://lucianavelarde.github.io/lucianamercedesvelardecaceres.github.io/" target="_blank">Visitar</a></td></tr>
+                        <tr><td>Yerik Michel Vilca Mendoza</td><td><a href="https://github.com/yerikvilca-cloud/Yerik-Vilca.git" target="_blank">Visitar</a></td></tr>
+                        <tr><td>Juan Rodrigo Tacca Paucar</td><td><a href="https://juan-rodrigo-tacca-paucar.github.io/Juan-Rodrigo-Tacca-Paucar-Estudiante-de-Administraci-n-de-Negocios/" target="_blank">Visitar</a></td></tr>
+                        <tr><td>Mirella Rossy Sanchez Quispe</td><td><a href="https://mirellasanchez.github.io/mirella-rossy-sanchez-quispe/" target="_blank">Visitar</a></td></tr>
+                        <tr><td>Ami Hanna Andía Choque</td><td><a href="https://amiandia-oss.github.io/Ami-Hanna-Andia-Choque/" target="_blank">Visitar</a></td></tr>
+                        <tr><td>Juan David Garcia Humpire</td><td><a href="https://judavi-dev.github.io/" target="_blank">Visitar</a></td></tr>
+                        <tr><td>Fernando Sebastian Vera Ramos</td><td><a href="https://mi-pagina-xipc.vercel.app/" target="_blank">Visitar</a></td></tr>
+                        <tr><td>Thiago Mathias Nieves Checca</td><td><a href="https://thiagonieves-eng.github.io/" target="_blank">Visitar</a></td></tr>
+                        <tr><td>Sebastián Jesús Olivera Alemán</td><td><a href="#" target="_blank">Visitar</a></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- CONTACTO -->
+        <section>
+            <h2>Contacto</h2>
+            <div class="contacto-info">
+                <p>📧 <strong>Correo institucional:</strong> <a href="mailto:mirella.sanchez@ucsp.edu.pe">mirella.sanchez@ucsp.edu.pe</a></p>
+                <p style="margin-top: 0.3rem;">🔗 <strong>LinkedIn:</strong> <a href="https://www.linkedin.com/feed/" target="_blank">Ver perfil</a></p>
+                <p style="margin-top: 0.3rem;">🐙 <strong>GitHub:</strong> <a href="https://github.com/mirellaSanchez?tab=repositories" target="_blank">Ver repositorios</a></p>
+            </div>
+        </section>
+
+        <!-- PIE DE PÁGINA -->
+        <footer style="margin-top: 2.5rem; text-align: center; font-size: 0.9rem; color: #706080; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 1.5rem;">
+            <p>© 2026 Mirella Rossy Sanchez Quispe · Hecho con 💜 y mucho ☕</p>
+        </footer>
     </div>
 
+    <script>
+        // --- LLUVIA DE ESTRELLAS Y FLORES ---
+        (function() {
+            const container = document.getElementById('lluviaContainer');
+            const elementos = ['⭐', '✨', '🌟', '💫', '🌸', '🌺', '🌷', '🌹', '🌻', '🌼', '🦋', '🌿'];
+            const cantidad = 45;
+
+            for (let i = 0; i < cantidad; i++) {
+                const item = document.createElement('div');
+                item.className = 'item-lluvia';
+                item.textContent = elementos[Math.floor(Math.random() * elementos.length)];
+                
+                // Posición horizontal aleatoria
+                item.style.left = Math.random() * 100 + '%';
+                
+                // Tamaño aleatorio
+                const size = 0.8 + Math.random() * 1.2;
+                item.style.fontSize = size + 'rem';
+                
+                // Duración aleatoria entre 8 y 18 segundos
+                const duracion = 8 + Math.random() * 10;
+                item.style.animationDuration = duracion + 's';
+                
+                // Retraso aleatorio
+                item.style.animationDelay = (Math.random() * 12) + 's';
+                
+                // Rotación inicial aleatoria
+                item.style.transform = 'rotate(' + (Math.random() * 360) + 'deg)';
+                
+                container.appendChild(item);
+            }
+        })();
+    </script>
 </body>
 </html>
